@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { TezosToolkit } from "@taquito/taquito";
+import { BeaconWallet } from "@taquito/beacon-wallet";
 
 function App() {
+  const Tezos = new TezosToolkit("https://mainnet-tezos.giganode.io");
+  const wallet = new BeaconWallet({ name: "Beacon Docs Taquito" });
+
+  Tezos.setWalletProvider(wallet);
+
+  const connectWallet = async () => {
+    try {
+      console.log("Requesting permissions...");
+      const permissions = await wallet.client.requestPermissions();
+      console.log("Got permissions:", permissions.address);
+    } catch (error) {
+      console.error("Got error:", error);
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 className="text-3xl font-bold underline">Hello world!</h1>
     </div>
   );
 }

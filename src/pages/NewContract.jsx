@@ -3,11 +3,10 @@ import ProtectedHeader from "../components/ProtectedHeader";
 // import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
-import { BeaconWallet } from "@taquito/beacon-wallet";
-import { TezosToolkit } from "@taquito/taquito";
 import genericMultisigJSONfile from "../Contracts/generic.json";
 import { connectWallet } from "../utils/wallet";
-import {Tezos} from "../utils/tezos";
+import { Tezos } from "../utils/tezos";
+import { wallet } from "../utils/wallet";
 
 const NewContract = () => {
   const { user } = useUser();
@@ -17,7 +16,7 @@ const NewContract = () => {
     phoneNumber: "",
     votingTitle: "",
     description: "",
-    adminWalletAddress: "",
+    // adminWalletAddress: "",
   });
 
   // const Tezos = new TezosToolkit("https://ghostnet.smartpy.io");
@@ -26,17 +25,31 @@ const NewContract = () => {
   //   preferredNetwork: "ghostnet",
   // });
   // Tezos.setWalletProvider(wallet);
-
+  //TODO:Refactor and Add server
   const handleContructDeploy = async (e) => {
     e.preventDefault();
+    if (
+      info.fullName === "" ||
+      info.email === "" ||
+      info.phoneNumber === "" ||
+      info.votingTitle === "" ||
+      info.description === ""
+      // info.adminWalletAddress === ""
+    ) {
+      alert("Please fill all the fields");
+      return;
+    }
     console.log(info);
     try {
       console.log("Requesting permissions...");
       const permissions = await connectWallet();
+      const accountPkh = await wallet.getPKH();
+      let initStorage = `(Pair (Pair (Pair "${accountPkh}" (Pair "${info.email}" "${info.fullName}")) (Pair (Pair "${info.phoneNumber}" 0) (Pair {} "${info.description}"))) (Pair (Pair (Pair "${info.votingTitle}" False) (Pair False False)) (Pair (Pair 0 0) (Pair 0 {}))))`;
+      console.log(initStorage);
       Tezos.wallet
         .originate({
           code: genericMultisigJSONfile,
-          init: `(Pair (Pair (Pair "tz1M8WJ8tcvqmR1uMovURFA2JdgWFADv74wP" (Pair "" "")) (Pair (Pair "" 0) (Pair {} ""))) (Pair (Pair (Pair "" False) (Pair False False)) (Pair (Pair 0 0) (Pair 0 {}))))`,
+          init: initStorage,
         })
         .send()
         .then((originationOp) => {
@@ -49,7 +62,7 @@ const NewContract = () => {
         .catch((error) =>
           console.log(`Error: ${JSON.stringify(error, null, 2)}`)
         );
-      // console.log("Got permissions:", permissions.address);
+      console.log("Got permissions:", permissions.address);
     } catch (error) {
       console.error("Got error:", error);
     }
@@ -198,7 +211,7 @@ const NewContract = () => {
                   Write a few sentences about your voting contract.
                 </p>
               </div>
-              <div className="sm:col-span-6">
+              {/* <div className="sm:col-span-6">
                 <label
                   htmlFor="first-name"
                   className="block text-sm font-medium leading-6 text-gray-900"
@@ -219,7 +232,7 @@ const NewContract = () => {
                     required
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

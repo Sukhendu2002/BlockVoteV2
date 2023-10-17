@@ -1,28 +1,118 @@
 import "./App.css";
-import { TezosToolkit } from "@taquito/taquito";
-import { BeaconWallet } from "@taquito/beacon-wallet";
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/clerk-react";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import Landing from "./pages/Landing";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import NewContract from "./pages/NewContract";
 
-function App() {
-  const Tezos = new TezosToolkit("https://mainnet-tezos.giganode.io");
-  const wallet = new BeaconWallet({ name: "Beacon Docs Taquito" });
+if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
+  throw new Error("Missing Publishable Key");
+}
 
-  Tezos.setWalletProvider(wallet);
+const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
 
-  const connectWallet = async () => {
-    try {
-      console.log("Requesting permissions...");
-      const permissions = await wallet.client.requestPermissions();
-      console.log("Got permissions:", permissions.address);
-    } catch (error) {
-      console.error("Got error:", error);
-    }
-  };
+function ProtectedPage() {
+  return <Dashboard />;
+}
+
+function ClerkProviderWithRoutes() {
+  const navigate = useNavigate();
 
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </div>
+    <ClerkProvider publishableKey={clerkPubKey} navigate={(to) => navigate(to)}>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <SignedIn>
+                <ProtectedPage />
+              </SignedIn>
+              <SignedOut>
+                <Landing />
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path="/new-contract"
+          element={
+            <>
+              <SignedIn>
+                <NewContract />
+              </SignedIn>
+              <SignedOut>
+                <Landing />
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path="/sign-in"
+          element={
+            <>
+              <SignedOut>
+                <Login />
+              </SignedOut>
+              <SignedIn>
+                <Landing />
+              </SignedIn>
+            </>
+          }
+        />
+        <Route
+          path="/sign-up"
+          element={
+            <>
+              <SignedOut>
+                <Signup />
+              </SignedOut>
+              <SignedIn>
+                <Landing />
+              </SignedIn>
+            </>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <>
+              <SignedIn>
+                <ProtectedPage />
+              </SignedIn>
+              <SignedOut>
+                <Landing />
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <>
+              <h1>Not found</h1>
+              <UserButton />
+            </>
+          }
+        />
+      </Routes>
+    </ClerkProvider>
   );
 }
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <ClerkProviderWithRoutes />
+    </BrowserRouter>
+  );
+};
 
 export default App;

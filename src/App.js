@@ -6,11 +6,11 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
-import Landing from "./pages/Landing";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import NewContract from "./pages/NewContract";
+import Landing from "./pages/Landing.jsx";
+import Signup from "./pages/Signup.jsx";
+import Login from "./pages/Login.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import NewContract from "./pages/NewContract.jsx";
 
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");

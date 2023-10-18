@@ -5,6 +5,7 @@
   "dependencies": {
     "@clerk/clerk-react": "^4.26.5",
     "@clerk/clerk-sdk-node": "^4.12.14",
+    "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@preline/overlay": "^1.4.0",
     "@taquito/beacon-wallet": "^17.3.2",

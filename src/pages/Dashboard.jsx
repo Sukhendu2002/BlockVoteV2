@@ -35,8 +35,22 @@ const Dashboard = () => {
           </h1>
           <Link
             to="/new-contract"
-            className="bg-black text-white px-6 py-2 rounded-md"
+            className="bg-black text-white px-6 py-2 rounded-md flex"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="w-6 h-6 mr-1"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
             Add Contract
           </Link>
         </div>
@@ -155,7 +169,7 @@ const Dashboard = () => {
                         className="text-primary-700"
                       >
                         {item.status === "Not Started"
-                          ? "Add Parties"
+                          ? "Add Candidates"
                           : "View Contract"}
                       </Link>
                     </td>

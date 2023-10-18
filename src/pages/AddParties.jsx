@@ -5,7 +5,7 @@ import Loader from "../components/Loader.jsx";
 import { Dialog, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
-import { addCandidate } from "../utils/operation.js";
+import { addCandidate, StartElect } from "../utils/operation.js";
 import { fetchStorage } from "../utils/tzkt.js";
 
 const AddParties = () => {
@@ -20,7 +20,6 @@ const AddParties = () => {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [listData, setListData] = useState([]);
 
-  console.log(contractAdd);
   useEffect(() => {
     const getStorage = async () => {
       const storage = await fetchStorage(contractAdd);
@@ -90,19 +89,71 @@ const AddParties = () => {
       {loading && <Loader />}
       {!loading && (
         <section className="flex flex-col items-center  w-full h-screen">
-          <div className="flex flex-row items-center justify-between w-full h-1/4 px-[20%]">
+          <div className="flex flex-row items-center justify-between w-full h-1/4 px-[15%]">
             <div className="flex flex-col flex-left">
               <h2 className="text-base font-semibold leading-7 text-gray-900">
                 {storage.electionName}
               </h2>
-              <p className="mt-1 text-sm leading-6 text-gray-600">
+              <p className="mt-1 text-sm leading-6 text-gray-600 flex gap-x-4">
                 Contract Add: {contractAdd}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-4 h-6 text-black-500"
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `http://localhost:3000/voting/${contractAdd}`
+                    );
+                  }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"
+                  />
+                </svg>
               </p>
             </div>
-            <div className="button">
+
+            <div className="button flex flex-row gap-x-2">
+              {storage && storage.candidateCount > 1 ? (
+                <button
+                  type="button"
+                  className="text-white px-4 py-2 rounded-md flex gradient bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
+                  // onClick={}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"
+                    />
+                  </svg>
+                  Start Election
+                </button>
+              ) : null}
+
               <button
                 type="button"
-                className="bg-black text-white px-6 py-2 rounded-md flex"
+                className="bg-black text-white px-4 py-2 rounded-md flex"
                 onClick={() => setOpen(true)}
               >
                 <svg
@@ -123,6 +174,13 @@ const AddParties = () => {
               </button>
             </div>
           </div>
+          <p
+            className={`${
+              listData.length > 1 ? "hidden" : "block"
+            } text-gray-500 text-xl font-semibold mb-3`}
+          >
+            Please add atleast 2 candidates to start the election
+          </p>
           {listData.length > 0 ? (
             <div className="flex flex-col items-center w-[70%]">
               <table className="w-full  bg-white text-left text-sm text-gray-500 border-collapse shadow-md rounded-md overflow-hidden ">

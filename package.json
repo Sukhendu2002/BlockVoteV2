@@ -2,11 +2,11 @@
   "name": "block_vote_v2",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "dependencies": {
     "@clerk/clerk-react": "^4.26.5",
     "@clerk/clerk-sdk-node": "^4.12.14",
     "@heroicons/react": "^2.0.18",
+    "@preline/overlay": "^1.4.0",
     "@taquito/beacon-wallet": "^17.3.2",
     "@taquito/taquito": "^17.3.2",
     "@testing-library/jest-dom": "^5.17.0",
@@ -43,10 +43,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject",
-    "frontend": "npm run start",
-    "backend": "nodemon ./server/server.js",
-    "dev": "concurrently \"npm run frontend\" \"npm run backend\""
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": [

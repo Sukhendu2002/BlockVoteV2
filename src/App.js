@@ -11,6 +11,7 @@ import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import NewContract from "./pages/NewContract.jsx";
+import AddParties from "./pages/AddParties.jsx";
 
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
@@ -47,6 +48,19 @@ function ClerkProviderWithRoutes() {
             <>
               <SignedIn>
                 <NewContract />
+              </SignedIn>
+              <SignedOut>
+                <Landing />
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path="/add-parties/:contractAdd"
+          element={
+            <>
+              <SignedIn>
+                <AddParties />
               </SignedIn>
               <SignedOut>
                 <Landing />

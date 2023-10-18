@@ -146,9 +146,18 @@ const Dashboard = () => {
                     </td>
                     <td className="flex justify-end gap-4 px-6 py-4 font-medium">
                       {/* <a href="">Delete</a> */}
-                      <a href="" className="text-primary-700">
-                        Edit
-                      </a>
+                      <Link
+                        to={
+                          item.status === "Not Started"
+                            ? `/add-parties/${item.contract}`
+                            : `/contract/${item.contract}`
+                        }
+                        className="text-primary-700"
+                      >
+                        {item.status === "Not Started"
+                          ? "Add Parties"
+                          : "View Contract"}
+                      </Link>
                     </td>
                   </tr>
                 ))}

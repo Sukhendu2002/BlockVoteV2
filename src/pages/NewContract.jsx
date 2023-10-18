@@ -7,8 +7,11 @@ import genericMultisigJSONfile from "../Contracts/generic.json";
 import { connectWallet } from "../utils/wallet";
 import { Tezos } from "../utils/tezos";
 import { wallet } from "../utils/wallet";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const NewContract = () => {
+  const navigate = useNavigate();
   const { user } = useUser();
   const [info, setInfo] = useState({
     fullName: user.fullName,
@@ -16,16 +19,9 @@ const NewContract = () => {
     phoneNumber: "",
     votingTitle: "",
     description: "",
-    // adminWalletAddress: "",
   });
+  // const [contractAddress, setContractAddress] = useState("");
 
-  // const Tezos = new TezosToolkit("https://ghostnet.smartpy.io");
-  // const wallet = new BeaconWallet({
-  //   name: "Voting Dapp",
-  //   preferredNetwork: "ghostnet",
-  // });
-  // Tezos.setWalletProvider(wallet);
-  //TODO:Refactor and Add server
   const handleContructDeploy = async (e) => {
     e.preventDefault();
     if (
@@ -34,7 +30,6 @@ const NewContract = () => {
       info.phoneNumber === "" ||
       info.votingTitle === "" ||
       info.description === ""
-      // info.adminWalletAddress === ""
     ) {
       alert("Please fill all the fields");
       return;
@@ -58,14 +53,29 @@ const NewContract = () => {
         })
         .then((contract) => {
           console.log(`Origination completed for ${contract.address}.`);
+          // setContractAddress(contract.address);
+          uploadData(contract.address);
         })
         .catch((error) =>
           console.log(`Error: ${JSON.stringify(error, null, 2)}`)
         );
       console.log("Got permissions:", permissions.address);
+
+      //Add contract to database
     } catch (error) {
       console.error("Got error:", error);
     }
+  };
+
+  const uploadData = async (contractAddress) => {
+    const data = {
+      email: info.email,
+      contract: contractAddress,
+      name: info.votingTitle,
+    };
+    const res = await axios.post("http://localhost:7000/add-contract", data);
+    console.log(res);
+    navigate("/dashboard");
   };
 
   return (

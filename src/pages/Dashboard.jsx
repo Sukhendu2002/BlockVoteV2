@@ -80,7 +80,7 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-                {data?.contract?.map((item) => (
+                {data?.contract?.reverse().map((item) => (
                   <tr key={item.contract}>
                     <th className="px-6 py-4 font-medium text-gray-900">
                       {item.name}
@@ -145,7 +145,7 @@ const Dashboard = () => {
                       </span>
                     </td>
                     <td className="flex justify-end gap-4 px-6 py-4 font-medium">
-                      <a href="">Delete</a>
+                      {/* <a href="">Delete</a> */}
                       <a href="" className="text-primary-700">
                         Edit
                       </a>

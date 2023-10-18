@@ -85,27 +85,63 @@ const Dashboard = () => {
                     <th className="px-6 py-4 font-medium text-gray-900">
                       {item.name}
                     </th>
-                    <td className="px-6 py-4">
-                      {new Date(
-                        parseInt(item.date) * 1000
-                      ).toLocaleDateString()}
-                    </td>
+                    <td className="px-6 py-4">{item.date}</td>
                     <td className="px-6 py-4">{item.contract}</td>
                     <td className="px-6 py-4">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          className="h-3 w-3"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        Paid
+                      <span
+                        className={`inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold ${
+                          item.status === "Not Started"
+                            ? "text-red-600 bg-red-100"
+                            : null
+                        } 
+
+                          ${
+                            item.status === "Started"
+                              ? "text-green-600 bg-green-100"
+                              : null
+                          }
+
+                          ${
+                            item.status === "Ended"
+                              ? "text-blue-600 bg-blue-100"
+                              : null
+                          }
+                        `}
+                      >
+                        {item.status === "Not Started" ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                        ) : (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                        )}
+
+                        {item.status.charAt(0).toUpperCase() +
+                          item.status.slice(1)}
                       </span>
                     </td>
                     <td className="flex justify-end gap-4 px-6 py-4 font-medium">

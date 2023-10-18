@@ -65,6 +65,36 @@ app.post("/get-contract", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+//update contract
+app.put("/update-contract", async (req, res) => {
+  const { email, contract, status } = req.body;
+  try {
+    // Find the user by email
+    const user = await Contract.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Find the index of the contract to update
+    const index = user.contract.findIndex((item) => item.contract === contract);
+
+    if (index === -1) {
+      return res.status(404).json({ error: "Contract not found" });
+    }
+
+    // Update the status
+    user.contract[index].status = status;
+
+    // Save the changes
+    await user.save(); // Await the save operation
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // eslint-disable-next-line no-undef
 app.listen(process.env.SERVER_PORT, () => {

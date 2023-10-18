@@ -6,9 +6,14 @@ const ContractSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    contract: {
-      type: Array,
-    },
+    contract: [
+      {
+        contract: String,
+        name: String,
+        date: String,
+        status: String,
+      },
+    ],
   },
   {
     timestamps: true,

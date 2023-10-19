@@ -17,7 +17,7 @@ export const connectWallet = async () => {
 export const getAccount = async () => {
   const activeAccount = await wallet.client.getActiveAccount();
   if (activeAccount) {
-    return activeAccount.address;
+  return activeAccount.address;
   } else {
     return null;
   }

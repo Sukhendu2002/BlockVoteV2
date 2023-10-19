@@ -15,6 +15,7 @@ import AddParties from "./pages/AddParties.jsx";
 import ProtectedHeader from "./components/ProtectedHeader";
 import Header from "./components/Header";
 import Voting from "./pages/Voting";
+import Register from "./pages/Register";
 
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
@@ -85,6 +86,25 @@ function ClerkProviderWithRoutes() {
                 <>
                   <Header />
                   <Voting />
+                </>
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path="/register/:contractAdd"
+          element={
+            <>
+              <SignedIn>
+                <>
+                  <ProtectedHeader />
+                  <Register />
+                </>
+              </SignedIn>
+              <SignedOut>
+                <>
+                  <Header />
+                  <Register />
                 </>
               </SignedOut>
             </>

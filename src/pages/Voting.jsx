@@ -5,11 +5,17 @@ import { fetchStorage } from "../utils/tzkt.js";
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
 import Loader from "../components/Loader.jsx";
+import {
+  connectWallet,
+  getFullActitveAccount,
+  disconnectWallet,
+} from "../utils/wallet.js";
 const Voting = () => {
   const { contractAdd } = useParams();
   const [storage, setStorage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [listData, setListData] = useState([]);
+  const [isWllConnected, setIsWllConnected] = useState(false);
   const cancelButtonRef = useRef(null);
   const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -21,6 +27,11 @@ const Voting = () => {
       setLoading(false);
     };
     getStorage();
+    getFullActitveAccount().then((res) => {
+      if (res) {
+        setIsWllConnected(true);
+      }
+    });
   }, [contractAdd]);
 
   //get canidate list
@@ -42,6 +53,11 @@ const Voting = () => {
             <div className="flex flex-col flex-left">
               <h2 className="text-base font-semibold leading-7 text-gray-900">
                 {storage.electionName}
+                <span className="border-2 border-gray-500 rounded-md px-2 py-[0.5px] ml-3 text-sm">
+                  {storage.isElectionStarted
+                    ? " Voting Started"
+                    : " Voting Not Started"}
+                </span>
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-600 flex gap-x-4">
                 Contract Add: {contractAdd}
@@ -70,11 +86,56 @@ const Voting = () => {
               </p>
             </div>
 
-            <div className="button flex flex-row ">
+            <div className="button flex flex-row gap-x-2">
+              {isWllConnected && (
+                <button
+                  type="button"
+                  //make this button a red outline
+                  className="bg-white px-4 py-2 rounded-md flex border-2 border-red-500 text-red-600
+                    hover:bg-red-500 hover:text-white transition duration-500 ease-in-out
+                   
+                  "
+                  onClick={() => {
+                    disconnectWallet();
+                    setIsWllConnected(false);
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6 mr-1"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                    />
+                  </svg>
+
+                  {isWllConnected && "Disconnect Wallet"}
+                </button>
+              )}
               <button
                 type="button"
                 className="bg-black text-white px-4 py-2 rounded-md flex"
-                onClick={() => setOpen(true)}
+                onClick={
+                  isWllConnected
+                    ? !storage.isElectionStarted
+                      ? () => {
+                          setOpen(true);
+                        }
+                      : () => {
+                          alert("Voting is already started");
+                        }
+                    : () => {
+                        connectWallet().then((res) => {
+                          setIsWllConnected(true);
+                        });
+                      }
+                }
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +151,9 @@ const Voting = () => {
                     d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                Register As Voter
+                {isWllConnected
+                  ? "Register For Vote"
+                  : "Connect Wallet for Vote"}
               </button>
             </div>
           </div>
@@ -193,9 +256,9 @@ const Voting = () => {
                         <button
                           type="button"
                           className="bg-black text-white px-6  rounded-md ml-2"
-                            // onClick={(e) => {
-                                
-                            // }}
+                          // onClick={(e) => {
+
+                          // }}
                           //   disabled={}
                         >
                           Add

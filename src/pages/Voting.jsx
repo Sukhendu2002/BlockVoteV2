@@ -49,6 +49,7 @@ const Voting = () => {
         .get(`https://api.ghostnet.tzkt.io/v1/bigmaps/${candidates}/keys`)
         .then((res) => {
           setListData(res.data);
+          console.log(res.data);
         });
     }
   };
@@ -428,6 +429,53 @@ const Voting = () => {
             <h1 className="text-2xl font-semibold text-gray-900">
               No Candidates Found
             </h1>
+          )}
+
+          {storage.isElectionEnded && (
+            <>
+              <p
+                className="my-5 text-md leading-6 text-gray-600 flex gap-x-4
+              bold text-2xl font-semibold text-gray-900
+            "
+              >
+                Result
+              </p>
+
+              <div className="flex flex-col items-center w-[70%]">
+                <span>
+                  Total Vote:{" "}
+                  {listData.reduce((acc, item) => {
+                    return acc + parseInt(item.value.votes);
+                  }, 0)}
+                </span>
+                {listData.map((item, index) => (
+                  <div className="flex flex-row justify-between w-full">
+                    <span>
+                      {item.value.name}: {item.value.votes}
+                    </span>
+                    <span>
+                      {((item.value.votes / storage.voterCount) * 100).toFixed(
+                        2
+                      )}
+                      %
+                    </span>
+                  </div>
+                ))}
+                <span
+                  className="my-5 text-md leading-6 text-black-600 flex gap-x-4
+              bold text-2xl font-semibold text-gray-900
+            "
+                >
+                  Winner:{" "}
+                  {
+                    listData.sort((a, b) => {
+                      return b?.value?.votes - a?.value?.votes;
+                    })[0]?.value?.name
+                  }
+                  🎉
+                </span>
+              </div>
+            </>
           )}
         </section>
       )}

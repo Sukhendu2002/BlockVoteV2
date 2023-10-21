@@ -117,6 +117,9 @@ const AddParties = () => {
             <div className="flex flex-col flex-left">
               <h2 className="text-base font-semibold leading-7 text-gray-900">
                 {storage.electionName}
+                <span className="border-2 border-gray-500 rounded-md px-2 py-[0.5px] ml-3 text-sm">
+                  Voter Count: {storage.voterCount}
+                </span>
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-600 flex gap-x-4">
                 Contract Add: {contractAdd}
@@ -144,15 +147,55 @@ const AddParties = () => {
                 </svg>
               </p>
             </div>
-
-            <div className="button flex flex-row gap-x-2">
-              {!storage.isElectionStarted ? (
-                storage && storage.candidateCount > 1 ? (
+            {storage.isElectionEnded ? (
+              <span
+                className="border-2  rounded-md px-2 py-[0.5px] ml-3 text-sm
+                border-red-500 text-red-500 
+              "
+              >
+                Election Ended
+              </span>
+            ) : (
+              <div className="button flex flex-row gap-x-2">
+                {!storage.isElectionStarted ? (
+                  storage && storage.candidateCount > 1 ? (
+                    <button
+                      type="button"
+                      className="text-white px-4 py-2 rounded-md flex gradient bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
+                      onClick={() => {
+                        StartElect(contractAdd);
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"
+                        />
+                      </svg>
+                      Start Election
+                    </button>
+                  ) : null
+                ) : (
                   <button
                     type="button"
-                    className="text-white px-4 py-2 rounded-md flex gradient bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
+                    className="text-white px-4 py-2 rounded-md flex border border-red-500 bg-red-500
+                    hover:bg-white hover:text-red-500 transition duration-300 ease-in-out
+                  "
                     onClick={() => {
-                      StartElect(contractAdd);
+                      EndElect(contractAdd);
                     }}
                   >
                     <svg
@@ -174,66 +217,35 @@ const AddParties = () => {
                         d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"
                       />
                     </svg>
-                    Start Election
+                    Stop Election
                   </button>
-                ) : null
-              ) : (
-                <button
-                  type="button"
-                  className="text-white px-4 py-2 rounded-md flex border border-red-500 bg-red-500
-                    hover:bg-white hover:text-red-500 transition duration-300 ease-in-out
-                  "
-                  onClick={() => {
-                    EndElect(contractAdd);
-                  }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"
-                    />
-                  </svg>
-                  Stop Election
-                </button>
-              )}
+                )}
 
-              {!storage.isElectionStarted && (
-                <button
-                  type="button"
-                  className="bg-black text-white px-4 py-2 rounded-md flex"
-                  onClick={() => setOpen(true)}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6 mr-1"
+                {!storage.isElectionStarted && (
+                  <button
+                    type="button"
+                    className="bg-black text-white px-4 py-2 rounded-md flex"
+                    onClick={() => setOpen(true)}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  Add Candidate
-                </button>
-              )}
-            </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-6 h-6 mr-1"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    Add Candidate
+                  </button>
+                )}
+              </div>
+            )}
           </div>
           <p
             className={`${

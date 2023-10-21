@@ -11,13 +11,18 @@ export const connectWallet = async () => {
       type: "ghostnet",
     },
   });
+  //savethe wallet address in local storage
+  const activeAccount = await wallet.client.getActiveAccount();
+  if (activeAccount) {
+    localStorage.setItem("walletAddress", activeAccount.address);
+  }
 };
 
 // TODO 2.c - Complete getAccount function
 export const getAccount = async () => {
   const activeAccount = await wallet.client.getActiveAccount();
   if (activeAccount) {
-  return activeAccount.address;
+    return activeAccount.address;
   } else {
     return null;
   }
@@ -26,6 +31,7 @@ export const getAccount = async () => {
 // TODO 2.d - Complete disconnectWallet function
 export const disconnectWallet = async () => {
   await wallet.clearActiveAccount();
+  localStorage.removeItem("walletAddress");
 };
 
 export const getFullActitveAccount = async () => {

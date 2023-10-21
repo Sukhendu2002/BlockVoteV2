@@ -30,13 +30,7 @@ const Voting = () => {
     getStorage();
     getFullActitveAccount().then((res) => {
       if (res) {
-        console.log(res);
         setIsWllConnected(true);
-        const voter = voters.find((item) => item.key === res.address);
-        if (voter) {
-          setCurrentVoter(voter);
-          console.log(voter);
-        }
       }
     });
   }, [contractAdd]);
@@ -58,6 +52,13 @@ const Voting = () => {
         .get(`https://api.ghostnet.tzkt.io/v1/bigmaps/${voters}/keys`)
         .then((res) => {
           setVoters(res.data);
+          console.log(res.data);
+          const add = localStorage.getItem("walletAddress");
+          const voter = res.data.find((item) => item.key === add);
+          if (voter) {
+            setCurrentVoter(voter);
+            console.log(voter);
+          }
         });
     }
   };
@@ -75,6 +76,13 @@ const Voting = () => {
                   {storage.isElectionStarted
                     ? " Voting Started"
                     : " Voting Not Started"}
+                </span>
+                <span className="border-2 border-yellow-500 rounded-md px-2 py-[0.5px] ml-3 text-sm">
+                  {currentVoter?.value?.isRegistered
+                    ? "Wait for Verification"
+                    : currentVoter?.value?.isVerified
+                    ? "Verified"
+                    : "Not Registered"}
                 </span>
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-600 flex gap-x-4">
@@ -136,29 +144,31 @@ const Voting = () => {
                   {isWllConnected && "Disconnect Wallet"}
                 </button>
               )}
-              {isWllConnected && !storage.isElectionStarted && (
-                <Link
-                  type="button"
-                  className="bg-black text-white px-4 py-2 rounded-md flex"
-                  to={`/register/${contractAdd}`}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6 mr-1"
+              {isWllConnected &&
+                !storage.isElectionStarted &&
+                !currentVoter && (
+                  <Link
+                    type="button"
+                    className="bg-black text-white px-4 py-2 rounded-md flex"
+                    to={`/register/${contractAdd}`}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  Register to Vote
-                </Link>
-              )}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-6 h-6 mr-1"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    Register to Vote
+                  </Link>
+                )}
               {!isWllConnected && (
                 <button
                   type="button"

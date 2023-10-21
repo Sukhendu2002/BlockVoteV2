@@ -17,8 +17,10 @@ const Voting = () => {
   const [isWllConnected, setIsWllConnected] = useState(false);
   const [currentVoter, setCurrentVoter] = useState(null);
   const [voters, setVoters] = useState([]);
+  const [forceLoading, setForceLoading] = useState(false);
 
   useEffect(() => {
+    console.log("useEffect");
     const getStorage = async () => {
       const storage = await fetchStorage(contractAdd);
       console.log(storage);
@@ -33,7 +35,7 @@ const Voting = () => {
         setIsWllConnected(true);
       }
     });
-  }, [contractAdd]);
+  }, [contractAdd, forceLoading]);
 
   //get canidate list
   const getCandidateList = async (count, candidates) => {
@@ -78,9 +80,11 @@ const Voting = () => {
                     : " Voting Not Started"}
                 </span>
                 <span className="border-2 border-yellow-500 rounded-md px-2 py-[0.5px] ml-3 text-sm">
-                  {currentVoter?.value?.isRegistered
+                  {currentVoter?.value?.isRegistered &&
+                  !currentVoter?.value?.isVerified
                     ? "Wait for Verification"
-                    : currentVoter?.value?.isVerified
+                    : currentVoter?.value?.isRegistered &&
+                      currentVoter?.value?.isVerified
                     ? "Verified"
                     : "Not Registered"}
                 </span>

@@ -5,8 +5,9 @@ import Loader from "../components/Loader.jsx";
 import { Dialog, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
-import { addCandidate, StartElect } from "../utils/operation.js";
+import { addCandidate, StartElect, verifyVoter } from "../utils/operation.js";
 import { fetchStorage } from "../utils/tzkt.js";
+import { connectWallet } from "../utils/wallet.js";
 
 const AddParties = () => {
   const { contractAdd } = useParams();
@@ -19,12 +20,14 @@ const AddParties = () => {
   const [moto, setMotot] = useState("");
   const [uploadLoading, setUploadLoading] = useState(false);
   const [listData, setListData] = useState([]);
+  const [voters, setVoters] = useState([]);
 
   useEffect(() => {
     const getStorage = async () => {
       const storage = await fetchStorage(contractAdd);
       console.log(storage);
       getCandidateList(parseInt(storage.candidateCount), storage.candidates);
+      getVotersList(parseInt(storage.voterCount), storage.voters);
       setStorage(storage);
       setLoading(false);
     };
@@ -40,6 +43,22 @@ const AddParties = () => {
           setListData(res.data);
         });
     }
+  };
+  const getVotersList = async (count, voters) => {
+    if (count > 0) {
+      axios
+        .get(`https://api.ghostnet.tzkt.io/v1/bigmaps/${voters}/keys`)
+        .then((res) => {
+          setVoters(res.data);
+          console.log(res.data);
+        });
+    }
+  };
+
+  const handleVerify = async (address) => {
+    const account = await connectWallet();
+    const res = await verifyVoter(contractAdd, address);
+    console.log(res);
   };
 
   const sendFileToIPFS = async (e) => {
@@ -182,7 +201,7 @@ const AddParties = () => {
             Please add atleast 2 candidates to start the election
           </p>
           {listData.length > 0 ? (
-            <div className="flex flex-col items-center w-[70%]">
+            <div className="flex flex-col items-center w-[70%] mb-4">
               <table className="w-full  bg-white text-left text-sm text-gray-500 border-collapse shadow-md rounded-md overflow-hidden ">
                 <thead className="bg-gray-50 border-b border-gray-200 first-letter">
                   <tr>
@@ -230,6 +249,95 @@ const AddParties = () => {
           ) : (
             <h1 className="text-2xl font-semibold text-gray-900">
               No Candidates Found
+            </h1>
+          )}
+          <p>
+            <span className="text-gray-500 text-xl font-semibold ">
+              Voters List
+            </span>
+          </p>
+          {voters.length > 0 ? (
+            <div className="flex flex-col items-center w-[70%] mt-5">
+              <table className="w-full  bg-white text-left text-sm text-gray-500 border-collapse shadow-md rounded-md overflow-hidden ">
+                <thead className="bg-gray-50 border-b border-gray-200 first-letter">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900 "
+                    >
+                      Name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
+                      Address
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
+                      Picture
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
+                      Identity
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+                  {voters?.map((item) => (
+                    <tr key={item.hash}>
+                      <th className="px-6 py-4 font-medium text-gray-900">
+                        {item.value.name}
+                      </th>
+                      <td className="px-6 py-4">{item.value.voterAddress}</td>
+                      <td className="px-6 py-4">
+                        <img
+                          src={`https://gateway.pinata.cloud/ipfs/${item.value.currentImage}`}
+                          alt="candidate"
+                          className="h-12 w-12 rounded-full"
+                        />
+                      </td>
+                      <td className="px-6 py-4">
+                        <img
+                          src={`https://gateway.pinata.cloud/ipfs/${item.value.voterIdImage}`}
+                          alt="candidate"
+                          className="h-12 w-12 rounded-full"
+                        />
+                      </td>
+                      {item.value.isVerified ? (
+                        <td className="px-6 py-4">Verified</td>
+                      ) : (
+                        <td className="px-6 py-4">
+                          <button
+                            type="button"
+                            className="bg-black text-white px-4 py-2 rounded-md flex"
+                            onClick={() =>
+                              handleVerify(item.value.voterAddress)
+                            }
+                          >
+                            Verify
+                          </button>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <h1 className="text-2xl font-semibold text-gray-900">
+              No Voters Found
             </h1>
           )}
 

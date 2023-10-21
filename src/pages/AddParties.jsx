@@ -4,6 +4,7 @@ import { useEffect, useState, Fragment, useRef } from "react";
 import Loader from "../components/Loader.jsx";
 import { Dialog, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
+import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import {
   addCandidate,
@@ -16,6 +17,7 @@ import { connectWallet } from "../utils/wallet.js";
 
 const AddParties = () => {
   const { contractAdd } = useParams();
+  const { user } = useUser();
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [storage, setStorage] = useState(null);
@@ -26,6 +28,7 @@ const AddParties = () => {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [listData, setListData] = useState([]);
   const [voters, setVoters] = useState([]);
+  const [verifying, setVerifying] = useState(false);
 
   useEffect(() => {
     const getStorage = async () => {
@@ -39,7 +42,6 @@ const AddParties = () => {
     getStorage();
   }, [contractAdd]);
 
-  //get canidate list
   const getCandidateList = async (count, candidates) => {
     if (count > 0) {
       axios
@@ -103,6 +105,9 @@ const AddParties = () => {
       console.log(candidate);
       setUploadLoading(false);
       setOpen(false);
+      setName("");
+      setPhoto(null);
+      setMotot("");
     } catch (error) {
       console.log(error);
     }
@@ -163,7 +168,37 @@ const AddParties = () => {
                       type="button"
                       className="text-white px-4 py-2 rounded-md flex gradient bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
                       onClick={() => {
+                        const res = connectWallet();
                         StartElect(contractAdd);
+
+                        const getStorage = async () => {
+                          const storage = await fetchStorage(contractAdd);
+                          console.log(storage);
+                          getCandidateList(
+                            parseInt(storage.candidateCount),
+                            storage.candidates
+                          );
+                          getVotersList(
+                            parseInt(storage.voterCount),
+                            storage.voters
+                          );
+                          setStorage(storage);
+                          setLoading(false);
+                          await axios.put(
+                            "http://localhost:7000/update-contract",
+                            {
+                              email: user.primaryEmailAddress.emailAddress,
+                              contract: contractAdd,
+                              status: "Started",
+                            },
+                            {
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                            }
+                          );
+                        };
+                        getStorage();
                       }}
                     >
                       <svg
@@ -195,7 +230,36 @@ const AddParties = () => {
                     hover:bg-white hover:text-red-500 transition duration-300 ease-in-out
                   "
                     onClick={() => {
+                      const res = connectWallet();
                       EndElect(contractAdd);
+                      const getStorage = async () => {
+                        const storage = await fetchStorage(contractAdd);
+                        console.log(storage);
+                        getCandidateList(
+                          parseInt(storage.candidateCount),
+                          storage.candidates
+                        );
+                        getVotersList(
+                          parseInt(storage.voterCount),
+                          storage.voters
+                        );
+                        setStorage(storage);
+                        setLoading(false);
+                        await axios.put(
+                          "http://localhost:7000/update-contract",
+                          {
+                            email: user.primaryEmailAddress.emailAddress,
+                            contract: contractAdd,
+                            status: "Ended",
+                          },
+                          {
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                          }
+                        );
+                      };
+                      getStorage();
                     }}
                   >
                     <svg
@@ -376,11 +440,28 @@ const AddParties = () => {
                           <button
                             type="button"
                             className="bg-black text-white px-4 py-2 rounded-md flex"
-                            onClick={() =>
-                              handleVerify(item.value.voterAddress)
-                            }
+                            onClick={() => {
+                              setVerifying(true);
+                              handleVerify(item.value.voterAddress);
+                              const getStorage = async () => {
+                                const storage = await fetchStorage(contractAdd);
+                                console.log(storage);
+                                getCandidateList(
+                                  parseInt(storage.candidateCount),
+                                  storage.candidates
+                                );
+                                getVotersList(
+                                  parseInt(storage.voterCount),
+                                  storage.voters
+                                );
+                                setStorage(storage);
+                                setLoading(false);
+                              };
+                              getStorage();
+                              setVerifying(false);
+                            }}
                           >
-                            Verify
+                            {verifying ? "Verifying..." : "Verify"}
                           </button>
                         </td>
                       )}

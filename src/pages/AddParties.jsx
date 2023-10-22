@@ -183,8 +183,8 @@ const AddParties = () => {
                             storage.voters
                           );
                           setStorage(storage);
-                          setLoading(false);
-                          await axios.put(
+                          getStorage();
+                          const res = await axios.put(
                             "http://localhost:7000/update-contract",
                             {
                               email: user.primaryEmailAddress.emailAddress,
@@ -198,7 +198,7 @@ const AddParties = () => {
                             }
                           );
                         };
-                        getStorage();
+                        setLoading(false);
                       }}
                     >
                       <svg
@@ -244,8 +244,8 @@ const AddParties = () => {
                           storage.voters
                         );
                         setStorage(storage);
-                        setLoading(false);
-                        await axios.put(
+                        getStorage();
+                        const res = await axios.put(
                           "http://localhost:7000/update-contract",
                           {
                             email: user.primaryEmailAddress.emailAddress,
@@ -259,7 +259,7 @@ const AddParties = () => {
                           }
                         );
                       };
-                      getStorage();
+                      setLoading(false);
                     }}
                   >
                     <svg

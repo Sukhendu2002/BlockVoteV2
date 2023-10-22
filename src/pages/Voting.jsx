@@ -83,7 +83,9 @@ const Voting = () => {
                 <span className="border-2 border-gray-500 rounded-md px-2 py-[0.5px] ml-3 text-sm">
                   {storage.isElectionStarted
                     ? " Voting Started"
-                    : " Voting Not Started"}
+                    : storage.isElectionEnded
+                    ? "Voting Ended"
+                    : "Not Started"}
                 </span>
                 {currentVoter?.value?.hasVoted ? (
                   <span className="border-2 border-green-500 rounded-md px-2 py-[0.5px] ml-3 text-sm">

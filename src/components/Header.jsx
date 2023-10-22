@@ -54,7 +54,7 @@ const Header = () => {
               className="text-base text-black transition-all duration-200 hover:text-opacity-80"
             >
               {" "}
-              Features{" "}
+              About{" "}
             </Link>
 
             <Link
@@ -63,7 +63,7 @@ const Header = () => {
               className="text-base text-black transition-all duration-200 hover:text-opacity-80"
             >
               {" "}
-              Solutions{" "}
+              Abstract{" "}
             </Link>
 
             <Link
@@ -72,7 +72,7 @@ const Header = () => {
               className="text-base text-black transition-all duration-200 hover:text-opacity-80"
             >
               {" "}
-              Resources{" "}
+              Process{" "}
             </Link>
 
             <Link
@@ -81,7 +81,7 @@ const Header = () => {
               className="text-base text-black transition-all duration-200 hover:text-opacity-80"
             >
               {" "}
-              Pricing{" "}
+              Team{" "}
             </Link>
           </div>
 

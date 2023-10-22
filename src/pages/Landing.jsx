@@ -11,14 +11,14 @@ const Landing = () => {
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="grid items-center grid-cols-1 gap-12 lg:grid-cols-2">
             <div>
-              <p className="text-base font-semibold tracking-wider text-blue-600 uppercase">
-                A social media for learners
+              <p className="text-base font-semibold tracking-wider font-mono text-blue-600 uppercase">
+                Simplify Your Voting Experience with BlockVote
               </p>
-              <h1 className="mt-4 text-4xl font-bold text-black lg:mt-8 sm:text-6xl xl:text-8xl">
-                Connect & learn from the experts
+              <h1 className="mt-4 text-4xl font-bold  text-black lg:mt-8 sm:text-6xl xl:text-7xl">
+                Multiple Contracts, One Secure Platform
               </h1>
-              <p className="mt-4 text-base text-black lg:mt-8 sm:text-xl">
-                Grow your career fast with right mentor.
+              <p className="mt-4 text-base font-mono text-black lg:mt-8 sm:text-xl">
+                Secure Multi-Contract Management
               </p>
 
               <Link

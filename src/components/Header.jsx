@@ -49,7 +49,7 @@ const Header = () => {
 
           <div className="hidden lg:flex lg:items-center lg:justify-center lg:space-x-10">
             <Link
-              to="#"
+              to="/about"
               title=""
               className="text-base text-black transition-all duration-200 hover:text-opacity-80"
             >

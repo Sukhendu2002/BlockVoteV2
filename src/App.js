@@ -16,6 +16,7 @@ import ProtectedHeader from "./components/ProtectedHeader";
 import Header from "./components/Header";
 import Voting from "./pages/Voting";
 import Register from "./pages/Register";
+import About from "./pages/About";
 
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
@@ -145,6 +146,21 @@ function ClerkProviderWithRoutes() {
               </SignedIn>
               <SignedOut>
                 <Landing />
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <>
+              <SignedIn>
+                <ProtectedHeader />
+                <About />
+              </SignedIn>
+              <SignedOut>
+                <Header />
+                <About />
               </SignedOut>
             </>
           }

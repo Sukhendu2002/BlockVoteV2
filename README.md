@@ -6,9 +6,9 @@ Welcome to BlockVote, a decentralized voting platform built on the Tezos blockch
 
 ## Table of Contents 📚
 
-- [Getting Started](#getting-started)
-- [Client](#client)
-- [Server](#server)
+- [Getting Started](#getting-started-)
+- [Client](#client-)
+- [Server](#server-)
 
 ## Getting Started 🚀
 

@@ -2,12 +2,19 @@ import { React } from "react";
 import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import Techs from "../components/Techs";
+import HowToWork from "../components/HowToWork";
+import ContuctUs from "../components/ContuctUs";
 
 const Landing = () => {
   return (
-    <div className="bg-white">
+    <div
+      className="
+        
+    bg-white
+    "
+    >
       <Header />
-      <section className="bg-[#FCF8F1] bg-opacity-30 py-10 sm:py-8 lg:py-6">
+      <section className="bg-opacity-30 py-10 sm:py-8 lg:py-6">
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="grid items-center grid-cols-1 gap-12 lg:grid-cols-2">
             <div>
@@ -18,7 +25,7 @@ const Landing = () => {
                 Multiple Contracts, One Secure Platform
               </h1>
               <p className="mt-4 text-base font-mono text-black lg:mt-8 sm:text-xl">
-                Secure Multi-Contract Management
+                Secure Multi-Contract Voting Management
               </p>
 
               <Link
@@ -57,16 +64,14 @@ const Landing = () => {
             </div>
 
             <div>
-              <img
-                className="w-full"
-                src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/1/hero-img.png"
-                alt=""
-              />
+              <img className="w-full" src="/hero.png" alt="" />
             </div>
           </div>
         </div>
       </section>
       <Techs />
+      <HowToWork />
+      {/* <ContuctUs /> */}
     </div>
   );
 };

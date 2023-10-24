@@ -11,7 +11,7 @@ const Dashboard = () => {
     const initContract = async () => {
       try {
         const { data } = await axios.post(
-          "http://localhost:7000/init-contract",
+          `${process.env.REACT_APP_SERVER_URL}/init-contract`,
           {
             email: user.primaryEmailAddress.emailAddress,
           }

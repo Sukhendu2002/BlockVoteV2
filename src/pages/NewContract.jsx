@@ -76,7 +76,10 @@ const NewContract = () => {
       contract: contractAddress,
       name: info.votingTitle,
     };
-    const res = await axios.post("http://localhost:7000/add-contract", data);
+    const res = await axios.post(
+      `${process.env.REACT_APP_SERVER_URL}/add-contract`,
+      data
+    );
     console.log(res);
     navigate("/dashboard");
   };

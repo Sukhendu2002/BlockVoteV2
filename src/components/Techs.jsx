@@ -1,6 +1,6 @@
 const Techs = () => {
   return (
-    <section className="py-10 bg-gray-50 sm:py-16 lg:py-24">
+    <section className="py-10  sm:py-16 lg:py-24">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <h1
           className="text-3xl  leading-9 text-center font-mono font-extrabold text-black-900 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14 mb-10"
@@ -72,7 +72,7 @@ const Techs = () => {
           <div>
             <img
               className="object-contain w-auto mx-auto h-14"
-              src="https://logowik.com/content/uploads/images/tailwind-css3232.logowik.com.webp"
+              src="/tailwind.png"
               alt=""
             />
           </div>

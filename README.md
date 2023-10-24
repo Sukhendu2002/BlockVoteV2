@@ -1,70 +1,46 @@
-# Getting Started with Create React App
+# BlockVote - Multi-Contract Decentralized Voting Platform 🗳️
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![BlockVote](/site.png)
 
-## Available Scripts
+Welcome to BlockVote, a decentralized voting platform built on the Tezos blockchain. BlockVote empowers users to create and vote on polls while providing full transparency in viewing poll results. The technology stack includes React, Node.js, Taquito, and more.
 
-In the project directory, you can run:
+## Table of Contents 📚
 
-### `npm start`
+- [Getting Started](#getting-started)
+- [Client](#client)
+- [Server](#server)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Getting Started 🚀
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+To get started with BlockVote, you'll need to set up both the client-side and server-side components. Here are the steps:
 
-### `npm test`
+### Environment Setup ⚙️
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Copy `.env.example` to `.env` and fill in the values.
+- Also, copy `server/.env.example` to `server/.env` and fill in the values.
 
-### `npm run build`
+### Client 🌐
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Navigate to the client directory:
+   ```bash
+   cd client
+   npm install
+   npm start
+   ```
+2. The client-side application should now be running on `localhost:3000`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Server 🖥️
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Next, navigate to the server directory:
+   ```bash
+   cd server
+   npm install
+   npm start
+   ```
+2. The server-side application should now be running on `localhost:7000`.
 
-### `npm run eject`
+Add the server address to the client-side .env file as `REACT_APP_SERVER_URL`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Customization 🎨
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+BlockVote is highly customizable. You can modify the platform to suit your specific requirements. Refer to the documentation for details on how to customize various aspects of the platform.

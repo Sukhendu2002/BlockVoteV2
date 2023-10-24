@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 const Header = () => {
   return (
-    <header className="bg-[#FCF8F1] bg-opacity-30 ">
+    <header className="4 bg-opacity-30 ">
       <div className="px-4 mx-auto sm:px-6 lg:px-8 w-[85%]">
         <div className="flex items-center justify-between h-16 lg:h-20 m-auto">
           <div className="flex-shrink-0">
             <Link to="/" className="flex">
-              <img className="w-auto h-8" src="/logo.png" alt="" />
+              <img className="w-auto h-8" src="/logo-removebg-preview.png" alt="" />
             </Link>
           </div>
 

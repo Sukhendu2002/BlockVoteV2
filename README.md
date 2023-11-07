@@ -1,6 +1,6 @@
 # BlockVote - Multi-Contract Decentralized Voting Platform 🗳️
 
-![BlockVote](/site.png)
+![BlockVote](https://res.cloudinary.com/depyeobvt/image/upload/v1699343616/tppzbu7qyzwflsrw5ozc.png)
 
 Welcome to BlockVote, a decentralized voting platform built on the Tezos blockchain. BlockVote empowers users to create and vote on polls while providing full transparency in viewing poll results. The technology stack includes React, Node.js, Taquito, and more.
 

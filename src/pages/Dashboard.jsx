@@ -110,7 +110,6 @@ const Dashboard = () => {
                             ? "text-red-600 bg-red-100"
                             : null
                         } 
-
                           ${
                             item.status === "Started"
                               ? "text-green-600 bg-green-100"

@@ -14,6 +14,7 @@ import {
 } from "../utils/operation.js";
 import { fetchStorage } from "../utils/tzkt.js";
 import { connectWallet } from "../utils/wallet.js";
+import { set } from "mongoose";
 
 const AddParties = () => {
   const { contractAdd } = useParams();
@@ -192,6 +193,7 @@ const AddParties = () => {
                       type="button"
                       className="text-white px-4 py-2 rounded-md flex gradient bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
                       onClick={() => {
+                        setLoading(true);
                         const res = connectWallet();
                         StartElect(contractAdd);
 
@@ -207,7 +209,6 @@ const AddParties = () => {
                             storage.voters
                           );
                           setStorage(storage);
-                          getStorage();
                           const res = await axios.put(
                             `${process.env.REACT_APP_SERVER_URL}/update-contract`,
                             {
@@ -222,6 +223,7 @@ const AddParties = () => {
                             }
                           );
                         };
+                        getStorage();
                         setLoading(false);
                       }}
                     >
@@ -254,6 +256,7 @@ const AddParties = () => {
                     hover:bg-white hover:text-red-500 transition duration-300 ease-in-out
                   "
                     onClick={() => {
+                      setLoading(true);
                       const res = connectWallet();
                       EndElect(contractAdd);
                       const getStorage = async () => {
@@ -268,7 +271,6 @@ const AddParties = () => {
                           storage.voters
                         );
                         setStorage(storage);
-                        getStorage();
                         const res = await axios.put(
                           `${process.env.REACT_APP_SERVER_URL}/update-contract`,
                           {
@@ -283,6 +285,7 @@ const AddParties = () => {
                           }
                         );
                       };
+                      getStorage();
                       setLoading(false);
                     }}
                   >

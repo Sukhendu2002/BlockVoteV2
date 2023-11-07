@@ -266,15 +266,15 @@ const Register = () => {
                       />
                     </div>
                   </div>
-                  <div className="sm:col-span-2 sm:col-start-1">
-                    <Camera setFileImg2={setFileImgUrl} />
-                  </div>
 
                   {/* {fileImgUrl !== "" ? (
                     <div class="sm:col-span-6">
                       <img src={fileImgUrl} alt="img" />
                     </div>
                   ) : null} */}
+                </div>
+                <div className="sm:col-span-2 sm:col-start-1  w-full">
+                  <Camera setFileImg2={setFileImgUrl} />
                 </div>
               </div>
             </div>

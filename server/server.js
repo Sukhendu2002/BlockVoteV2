@@ -96,10 +96,11 @@ app.put("/update-contract", async (req, res) => {
   }
 });
 
+const PORT = process.env.SERVER_PORT || 5000;
 // eslint-disable-next-line no-undef
-app.listen(process.env.SERVER_PORT, () => {
+app.listen(PORT, () => {
   // eslint-disable-next-line no-undef
-  console.log(`Server is running on port ${process.env.SERVER_PORT}`);
+  console.log(`Server is running on port ${PORT}`);
   mongoose
     // eslint-disable-next-line no-undef
     .connect(process.env.MONGO_URI, {

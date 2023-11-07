@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [data, setData] = useState(null);
+  const [contracts, setContracts] = useState([]);
   const { user } = useUser();
   useEffect(() => {
     const initContract = async () => {
@@ -16,7 +17,8 @@ const Dashboard = () => {
             email: user.primaryEmailAddress.emailAddress,
           }
         );
-        console.log(data);
+        console.log(data.contract.reverse());
+        setContracts(data.contract);
         setData(data);
       } catch (error) {
         console.log(error);
@@ -94,7 +96,7 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-                {data?.contract?.reverse().map((item) => (
+                {contracts.map((item) => (
                   <tr key={item.contract}>
                     <th className="px-6 py-4 font-medium text-gray-900">
                       {item.name}

@@ -43,7 +43,7 @@ const Camera = ({ setFileImg2 }) => {
   return (
     <div
       style={{
-        width: "100%",
+        width: "87%",
         display: "flex",
         justifyContent: "space-between",
         marginTop: "1rem",

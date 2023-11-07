@@ -140,7 +140,7 @@ const AddParties = () => {
                   }}
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      `http://localhost:3000/voting/${contractAdd}`
+                      `https://block-vote-v2.vercel.app/voting/${contractAdd}`
                     );
                   }}
                 >
@@ -163,7 +163,7 @@ const AddParties = () => {
                   onClick={() => {
                     //open the link in a new tab
                     window.open(
-                      `http://localhost:3000/voting/${contractAdd}`,
+                      `https://block-vote-v2.vercel.app/voting/${contractAdd}`,
                       "_blank"
                     );
                   }}

@@ -120,7 +120,7 @@ const Voting = () => {
                   }}
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      `http://localhost:3000/voting/${contractAdd}`
+                      `https://block-vote-v2.vercel.app/voting/${contractAdd}`
                     );
                   }}
                 >

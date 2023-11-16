@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
-dotenv.config();
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import Contract from "./models/Contracts.js";
+dotenv.config();
 
 const app = express();
 app.use(cors());
@@ -90,6 +90,34 @@ app.put("/update-contract", async (req, res) => {
     await user.save(); // Await the save operation
 
     res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//Delete contract
+app.delete("/delete-contract", async (req, res) => {
+  const { contract, email } = req.body;
+
+  try {
+    const user = await Contract.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const index = user.contract.findIndex((item) => item.contract === contract);
+
+    if (index === -1) {
+      return res.status(404).json({ error: "Contract not found" });
+    }
+
+    user.contract.splice(index, 1);
+    await user.save();
+    res.status(200).json({
+      message: "Contract deleted successfully",
+      user,
+      success: true,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });

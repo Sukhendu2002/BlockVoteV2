@@ -14,7 +14,6 @@ import {
 } from "../utils/operation.js";
 import { fetchStorage } from "../utils/tzkt.js";
 import { connectWallet } from "../utils/wallet.js";
-import { set } from "mongoose";
 
 const AddParties = () => {
   const { contractAdd } = useParams();

@@ -157,6 +157,7 @@ const AddParties = () => {
                   stroke-width="1.5"
                   stroke="currentColor"
                   class="w-4 h-6"
+                  
                   style={{
                     cursor: "pointer",
                   }}

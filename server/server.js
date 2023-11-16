@@ -3,8 +3,12 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import Contract from "./models/Contracts.js";
+import twilio from "twilio";
 dotenv.config();
-
+const client = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -122,6 +126,24 @@ app.delete("/delete-contract", async (req, res) => {
     console.error(error);
     res.status(500).json({ error: error.message });
   }
+});
+
+//Send sms Message
+app.post("/send", (req, res) => {
+  const { number, message } = req.body;
+  client.messages
+    .create({
+      body: message,
+      from: "+12512801690",
+      to: number,
+    })
+    .then((message) => {
+      res.status(200).json({ message: "Message sent successfully" });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "Message not sent" });
+    });
 });
 
 const PORT = process.env.SERVER_PORT || 5000;

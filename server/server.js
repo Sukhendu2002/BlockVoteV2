@@ -135,7 +135,7 @@ app.post("/send", (req, res) => {
     .create({
       body: message,
       from: "+12512801690",
-      to: number,
+      to: `+91${number}`,
     })
     .then((message) => {
       res.status(200).json({ message: "Message sent successfully" });

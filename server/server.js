@@ -1,10 +1,14 @@
 import dotenv from "dotenv";
-dotenv.config();
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import Contract from "./models/Contracts.js";
-
+import twilio from "twilio";
+dotenv.config();
+const client = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -94,6 +98,52 @@ app.put("/update-contract", async (req, res) => {
     console.error(error);
     res.status(500).json({ error: error.message });
   }
+});
+
+//Delete contract
+app.delete("/delete-contract", async (req, res) => {
+  const { contract, email } = req.body;
+
+  try {
+    const user = await Contract.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const index = user.contract.findIndex((item) => item.contract === contract);
+
+    if (index === -1) {
+      return res.status(404).json({ error: "Contract not found" });
+    }
+
+    user.contract.splice(index, 1);
+    await user.save();
+    res.status(200).json({
+      message: "Contract deleted successfully",
+      user,
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//Send sms Message
+app.post("/send", (req, res) => {
+  const { number, message } = req.body;
+  client.messages
+    .create({
+      body: message,
+      from: "+12512801690",
+      to: `+91${number}`,
+    })
+    .then((message) => {
+      res.status(200).json({ message: "Message sent successfully" });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "Message not sent" });
+    });
 });
 
 const PORT = process.env.SERVER_PORT || 5000;

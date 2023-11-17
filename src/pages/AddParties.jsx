@@ -14,7 +14,6 @@ import {
 } from "../utils/operation.js";
 import { fetchStorage } from "../utils/tzkt.js";
 import { connectWallet } from "../utils/wallet.js";
-import { set } from "mongoose";
 
 const AddParties = () => {
   const { contractAdd } = useParams();
@@ -481,8 +480,16 @@ const AddParties = () => {
                                   parseInt(storage.voterCount),
                                   storage.voters
                                 );
+
                                 setStorage(storage);
                                 setLoading(false);
+                                const smsData = await axios.post(
+                                  `${process.env.REACT_APP_SERVER_URL}/send`,
+                                  {
+                                    number: item.value.phone,
+                                    message: `You are successfully verified for ${storage.electionName} election. You can vote after the election starts.`,
+                                  }
+                                );
                               };
                               getStorage();
                               setVerifying(false);

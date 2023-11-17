@@ -63,8 +63,6 @@ const NewContract = () => {
           console.log(`Error: ${JSON.stringify(error, null, 2)}`)
         );
       console.log("Got permissions:", permissions.address);
-
-      //Add contract to database
     } catch (error) {
       console.error("Got error:", error);
     }
@@ -80,6 +78,15 @@ const NewContract = () => {
       `${process.env.REACT_APP_SERVER_URL}/add-contract`,
       data
     );
+    //send sms
+    const smsData = await axios.post(
+      `${process.env.REACT_APP_SERVER_URL}/send`,
+      {
+        number: info.phoneNumber,
+        message: `Your voting contract has been successfully deployed. Contract Address: ${contractAddress}`,
+      }
+    );
+
     console.log(res);
     navigate("/dashboard");
   };

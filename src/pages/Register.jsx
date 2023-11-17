@@ -141,6 +141,13 @@ const Register = () => {
         pic2
       );
       console.log(operation);
+      const smsData = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/send`,
+        {
+          number: phone,
+          message: `You are successfully registered as a voter for ${storage.electionName} election. Your voter id is ${voterIdno}.`,
+        }
+      );
       setUploading(false);
       navigate("/voting/" + contractAdd);
     } catch (err) {

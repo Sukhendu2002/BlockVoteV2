@@ -363,13 +363,6 @@ const Voting = () => {
                                       parseInt(storage.voterCount),
                                       storage.voters
                                     );
-                                    const smsData = await axios.post(
-                                      `${process.env.REACT_APP_SERVER_URL}/send`,
-                                      {
-                                        number: currentVoter?.value?.phone,
-                                        message: `You are successfully voted for ${listData[index]?.value?.name} in ${storage.electionName} election`,
-                                      }
-                                    );
                                     setStorage(storage);
                                     setLoading(false);
                                   };

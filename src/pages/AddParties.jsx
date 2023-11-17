@@ -93,6 +93,7 @@ const AddParties = () => {
           },
         }
       );
+      const account = await connectWallet();
       const candidate = await addCandidate(
         contractAdd,
         name,
@@ -157,7 +158,6 @@ const AddParties = () => {
                   stroke-width="1.5"
                   stroke="currentColor"
                   class="w-4 h-6"
-                  
                   style={{
                     cursor: "pointer",
                   }}
@@ -635,7 +635,6 @@ const AddParties = () => {
                           className="bg-black text-white px-6  rounded-md ml-2"
                           onClick={(e) => {
                             sendFileToIPFS(e);
-                            // setOpen(false);
                           }}
                           disabled={uploadLoading}
                         >

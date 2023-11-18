@@ -484,13 +484,17 @@ const AddParties = () => {
 
                                 setStorage(storage);
                                 setLoading(false);
-                                const smsData = await axios.post(
-                                  `${process.env.REACT_APP_SERVER_URL}/send`,
-                                  {
-                                    number: item.value.phone,
-                                    message: `You are successfully verified for ${storage.electionName} election. You can vote after the election starts.`,
-                                  }
-                                );
+                                try {
+                                  const smsData = await axios.post(
+                                    `${process.env.REACT_APP_SERVER_URL}/send`,
+                                    {
+                                      number: item.value.phone,
+                                      message: `You are successfully verified for ${storage.electionName} election. You can vote after the election starts.`,
+                                    }
+                                  );
+                                } catch (error) {
+                                  console.log(error);
+                                }
                               };
                               getStorage();
                               setVerifying(false);

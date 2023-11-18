@@ -144,6 +144,7 @@ app.post("/send", (req, res) => {
       console.log(err);
       res.status(500).json({ message: "Message not sent" });
     });
+    
 });
 
 const PORT = process.env.SERVER_PORT || 5000;

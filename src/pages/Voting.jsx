@@ -343,7 +343,7 @@ const Voting = () => {
                               const updatedVotingStates = [...votingStates];
                               updatedVotingStates[index] = true;
                               setVotingStates(updatedVotingStates);
-
+                              const res = connectWallet();
                               vote(contractAdd, index)
                                 .then((res) => {
                                   // After voting is complete, reset the loading state for this row

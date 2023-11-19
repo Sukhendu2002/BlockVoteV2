@@ -113,6 +113,12 @@ const AddParties = () => {
       console.log(error);
     }
   };
+
+  const handleStop = async () => {
+    const account = await connectWallet();
+    const res = await EndElect(contractAdd);
+    console.log(res);
+  };
   return (
     <>
       <ProtectedHeader />
@@ -257,35 +263,40 @@ const AddParties = () => {
                   "
                     onClick={() => {
                       setLoading(true);
-                      const res = connectWallet();
-                      EndElect(contractAdd);
-                      const getStorage = async () => {
-                        const storage = await fetchStorage(contractAdd);
-                        console.log(storage);
-                        getCandidateList(
-                          parseInt(storage.candidateCount),
-                          storage.candidates
-                        );
-                        getVotersList(
-                          parseInt(storage.voterCount),
-                          storage.voters
-                        );
-                        setStorage(storage);
-                        const res = await axios.put(
-                          `${process.env.REACT_APP_SERVER_URL}/update-contract`,
-                          {
-                            email: user.primaryEmailAddress.emailAddress,
-                            contract: contractAdd,
-                            status: "Ended",
-                          },
-                          {
-                            headers: {
-                              "Content-Type": "application/json",
+                      try {
+                        const res = connectWallet();
+                        EndElect(contractAdd);
+                        const getStorage = async () => {
+                          const storage = await fetchStorage(contractAdd);
+                          console.log(storage);
+                          getCandidateList(
+                            parseInt(storage.candidateCount),
+                            storage.candidates
+                          );
+                          getVotersList(
+                            parseInt(storage.voterCount),
+                            storage.voters
+                          );
+                          setStorage(storage);
+                          const res = await axios.put(
+                            `${process.env.REACT_APP_SERVER_URL}/update-contract`,
+                            {
+                              email: user.primaryEmailAddress.emailAddress,
+                              contract: contractAdd,
+                              status: "Ended",
                             },
-                          }
-                        );
-                      };
-                      getStorage();
+                            {
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                            }
+                          );
+                        };
+                        getStorage();
+                      } catch (error) {
+                        console.log(error);
+                      }
+
                       setLoading(false);
                     }}
                   >
@@ -483,7 +494,6 @@ const AddParties = () => {
                                 );
 
                                 setStorage(storage);
-                                setLoading(false);
                                 try {
                                   const smsData = await axios.post(
                                     `${process.env.REACT_APP_SERVER_URL}/send`,

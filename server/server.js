@@ -8,10 +8,10 @@ import faceapi from "face-api.js";
 import { Canvas, Image } from "canvas";
 import canvas from "canvas";
 import fileUpload from "express-fileupload";
-dotenv.config();
-faceapi.env.monkeyPatch({ Canvas, Image });
 import fs from "fs";
 import path from "path";
+dotenv.config();
+faceapi.env.monkeyPatch({ Canvas, Image });
 const client = twilio(
   process.env.TWILIO_ACCOUNT_SID,
   process.env.TWILIO_AUTH_TOKEN
@@ -75,14 +75,21 @@ async function uploadLabeledImages(images, label) {
 }
 async function getDescriptorsFromDB(image) {
   let faces = await FaceModel.find();
+  // eslint-disable-next-line no-undef
   for (i = 0; i < faces.length; i++) {
+    // eslint-disable-next-line no-undef
     for (j = 0; j < faces[i].descriptions.length; j++) {
+      // eslint-disable-next-line no-undef
       faces[i].descriptions[j] = new Float32Array(
+        // eslint-disable-next-line no-undef
         Object.values(faces[i].descriptions[j])
       );
     }
+    // eslint-disable-next-line no-undef
     faces[i] = new faceapi.LabeledFaceDescriptors(
+      // eslint-disable-next-line no-undef
       faces[i].label,
+      // eslint-disable-next-line no-undef
       faces[i].descriptions
     );
   }

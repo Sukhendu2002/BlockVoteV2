@@ -6,7 +6,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 lg:h-20 m-auto">
           <div className="flex-shrink-0">
             <Link to="/" className="flex">
-              <img className="w-auto h-8" src="/logo-removebg-preview.png" alt="" />
+              <img
+                className="w-auto h-8"
+                src="/logo-removebg-preview.png"
+                alt=""
+              />
             </Link>
           </div>
 
@@ -84,16 +88,31 @@ const Header = () => {
               Team{" "}
             </Link>
           </div>
-
-          <Link
-            to="/sign-up"
-            title=""
-            className="hidden lg:inline-flex items-center justify-center px-5 py-2.5 text-base transition-all duration-200 hover:bg-yellow-300 hover:text-black focus:text-black focus:bg-yellow-300 font-semibold text-white bg-black rounded-full"
-            role="button"
-          >
-            {" "}
-            Join Now{" "}
-          </Link>
+          <span className="flex gap-2">
+            <Link
+              to="/sign-up"
+              title=""
+              className="hidden lg:inline-flex items-center justify-center px-5 py-2.5 text-base transition-all duration-200 hover:bg-yellow-300 hover:text-black focus:text-black focus:bg-yellow-300 font-semibold text-white bg-black rounded-full"
+              role="button"
+            >
+              {" "}
+              Join Now{" "}
+            </Link>
+            <img
+              className="hidden lg:block h-10 w-auto"
+              src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+              alt="Workflow"
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                window.open(
+                  `https://github.com/Sukhendu2002/BlockVoteV2`,
+                  "_blank"
+                );
+              }}
+            />
+          </span>
         </div>
       </div>
     </header>

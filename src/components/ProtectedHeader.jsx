@@ -7,11 +7,7 @@ const ProtectedHeader = () => {
         <div className="flex items-center justify-between h-16 lg:h-20">
           <div className="flex-shrink-0">
             <Link to="/dashboard" className="flex">
-              <img
-                className="w-auto h-8"
-                src="/logo.png"
-                alt=""
-              />
+              <img className="w-auto h-8" src="/logo.png" alt="" />
             </Link>
           </div>
 
@@ -54,12 +50,12 @@ const ProtectedHeader = () => {
 
           <div className="hidden lg:flex lg:items-center lg:justify-center lg:space-x-10">
             <Link
-              to="#"
+              to="/about"
               title=""
               className="text-base text-black transition-all duration-200 hover:text-opacity-80"
             >
               {" "}
-              Features{" "}
+              About{" "}
             </Link>
 
             <Link
@@ -68,7 +64,7 @@ const ProtectedHeader = () => {
               className="text-base text-black transition-all duration-200 hover:text-opacity-80"
             >
               {" "}
-              Solutions{" "}
+              Abstract{" "}
             </Link>
 
             <Link
@@ -77,7 +73,7 @@ const ProtectedHeader = () => {
               className="text-base text-black transition-all duration-200 hover:text-opacity-80"
             >
               {" "}
-              Resources{" "}
+              Process{" "}
             </Link>
 
             <Link
@@ -86,7 +82,7 @@ const ProtectedHeader = () => {
               className="text-base text-black transition-all duration-200 hover:text-opacity-80"
             >
               {" "}
-              Pricing{" "}
+              Team{" "}
             </Link>
           </div>
 

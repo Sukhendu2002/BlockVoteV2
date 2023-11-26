@@ -59,12 +59,12 @@ const ProtectedHeader = () => {
             </Link>
 
             <Link
-              to="#"
+              to="/recent-contracts"
               title=""
               className="text-base text-black transition-all duration-200 hover:text-opacity-80"
             >
               {" "}
-              Abstract{" "}
+              Recent Contracts{" "}
             </Link>
 
             <Link

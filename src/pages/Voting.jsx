@@ -217,7 +217,7 @@ const Voting = () => {
                     Register to Vote
                   </Link>
                 )}
-              {!isWllConnected && (
+              {!isWllConnected && !storage.isElectionEnded && (
                 <button
                   type="button"
                   className="bg-black text-white px-4 py-2 rounded-md flex"

@@ -115,7 +115,6 @@ const extractFeaces = async (image) => {
   faceapi.matchDimensions(temp, displaySize);
   const detections = await faceapi.detectAllFaces(img).withFaceLandmarks();
   const resizedDetections = faceapi.resizeResults(detections, displaySize);
-  //cutout the face and save it to a new file
   const out = faceapi.createCanvasFromMedia(img);
   faceapi.matchDimensions(out, displaySize);
   const ctx = out.getContext("2d");
@@ -178,7 +177,6 @@ app.post("/init-contract", async (req, res) => {
   try {
     const { email } = req.body;
     const contract = new Contract({ email, contract: [] });
-    //if email already exists
     const user = await Contract.findOne({ email });
     if (user) {
       res.status(200).json(user);
@@ -195,7 +193,6 @@ app.post("/add-contract", async (req, res) => {
   try {
     const { email, contract, name } = req.body;
     const user = await Contract.findOne({ email });
-    //check if contract already exists
     const contractExists = user.contract.find((item) => item === contract);
     if (contractExists) {
       res.status(200).json(user);
@@ -228,25 +225,19 @@ app.post("/get-contract", async (req, res) => {
 app.put("/update-contract", async (req, res) => {
   const { email, contract, status } = req.body;
   try {
-    // Find the user by email
     const user = await Contract.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Find the index of the contract to update
     const index = user.contract.findIndex((item) => item.contract === contract);
-
     if (index === -1) {
       return res.status(404).json({ error: "Contract not found" });
     }
 
-    // Update the status
     user.contract[index].status = status;
-
-    // Save the changes
-    await user.save(); // Await the save operation
+    await user.save();
 
     res.status(200).json(user);
   } catch (error) {
@@ -277,6 +268,26 @@ app.delete("/delete-contract", async (req, res) => {
       user,
       success: true,
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//Get recent contracts
+app.get("/recent-contracts", async (req, res) => {
+  try {
+    const users = await Contract.find();
+    let contracts = [];
+    users.forEach((user) => {
+      contracts.push(...user.contract);
+    });
+    contracts.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+    contracts = contracts.slice(0, 20);
+    contracts = contracts.reverse();
+    res.status(200).json(contracts);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });

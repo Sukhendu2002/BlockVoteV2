@@ -50,13 +50,13 @@ const RecentContracts = () => {
                   } 
                           ${
                             contract.status === "Started"
-                              ? "text-green-600 bg-green-100"
+                              ? "text-green-600 bg-green-200"
                               : null
                           }
 
                           ${
                             contract.status === "Ended"
-                              ? "text-blue-600 bg-blue-200"
+                              ? "text-blue-600 bg-blue-300"
                               : null
                           }
                         `}

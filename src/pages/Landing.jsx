@@ -63,8 +63,17 @@ const Landing = () => {
               </p>
             </div>
 
-            <div>
-              <img className="w-full" src="/hero.png" alt="" />
+            <div
+              className="relative flex items-center justify-center"
+              style={{ height: "auto" }}
+            >
+              <img
+                className="
+                w-[90%] h-[90%] object-cover object-center
+                "
+                src="/hero.png"
+                alt=""
+              />
             </div>
           </div>
         </div>

@@ -28,7 +28,7 @@ const Techs = () => {
           <div>
             <img
               className="object-contain w-auto mx-auto h-14"
-              src="https://raw.githubusercontent.com/ecadlabs/taquito/master/img/Taquito.png"
+              src="https://repository-images.githubusercontent.com/200548898/aaacbcc3-03e1-495f-a46e-70e06647b353"
               alt=""
             />
           </div>

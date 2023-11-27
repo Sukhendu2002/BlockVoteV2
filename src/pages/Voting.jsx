@@ -324,7 +324,7 @@ const Voting = () => {
                       <td className="px-6 py-4">{item.value.header}</td>
                       <td className="px-6 py-4">
                         <img
-                          src={`https://gateway.pinata.cloud/ipfs/${item.value.image}`}
+                          src={`https://cloudflare-ipfs.com/ipfs/${item.value.image}`}
                           alt="candidate"
                           className="h-12 w-12 rounded-full"
                         />
@@ -363,15 +363,19 @@ const Voting = () => {
                                       parseInt(storage.voterCount),
                                       storage.voters
                                     );
-                                    const smsData = await axios.post(
-                                      `${process.env.REACT_APP_SERVER_URL}/send`,
-                                      {
-                                        number: currentVoter?.value?.phone,
-                                        message: `You are successfully voted for ${listData[index]?.value?.name} in ${storage.electionName} election`,
-                                      }
-                                    );
                                     setStorage(storage);
                                     setLoading(false);
+                                    try {
+                                      const smsData = await axios.post(
+                                        `${process.env.REACT_APP_SERVER_URL}/send`,
+                                        {
+                                          number: currentVoter?.value?.phone,
+                                          message: `You are successfully voted for ${listData[index]?.value?.name} in ${storage.electionName} election`,
+                                        }
+                                      );
+                                    } catch (error) {
+                                      console.log(error);
+                                    }
                                   };
                                   getStorage();
                                   getFullActitveAccount().then((res) => {

@@ -1,7 +1,7 @@
 // TODO 2.a - Setup a Beacon Wallet instance
 import { BeaconWallet } from "@taquito/beacon-wallet";
 export const wallet = new BeaconWallet({
-  name: "Voting Dapp",
+  name: "Block Vote V2",
   preferredNetwork: "ghostnet",
 });
 // TODO 2.b - Complete connectWallet function (for ithacanet)

@@ -13,6 +13,7 @@ const Camera = ({ setFileImg2 }) => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const connect = window.drawConnectors;
+  const [disabledCapture, setDisabledCapture] = useState(false);
   var camera = null;
 
   const [url, setUrl] = useState(null);
@@ -32,6 +33,13 @@ const Camera = ({ setFileImg2 }) => {
       const blob = new Blob([byteArray], { type: "image/jpeg" });
 
       setFileImg2(blob);
+      //off the camera
+      camera.stop();
+      //stop the video
+      webcamRef.current.video.pause();
+      webcamRef.current.video.srcObject = null;
+      webcamRef.current.video.src = null;
+      setDisabledCapture(true);
     },
     [webcamRef]
   );
@@ -63,16 +71,16 @@ const Camera = ({ setFileImg2 }) => {
           lineWidth: 1,
         });
         connect(canvasCtx, landmarks, Facemesh.FACEMESH_RIGHT_EYE, {
-          color: "#FF3030",
+          color: "#E0E0E0 ",
         });
         connect(canvasCtx, landmarks, Facemesh.FACEMESH_RIGHT_EYEBROW, {
-          color: "#FF3030",
+          color: "#E0E0E0",
         });
         connect(canvasCtx, landmarks, Facemesh.FACEMESH_LEFT_EYE, {
-          color: "#30FF30",
+          color: "#E0E0E0",
         });
         connect(canvasCtx, landmarks, Facemesh.FACEMESH_LEFT_EYEBROW, {
-          color: "#30FF30",
+          color: "#E0E0E0",
         });
         connect(canvasCtx, landmarks, Facemesh.FACEMESH_FACE_OVAL, {
           color: "#E0E0E0",
@@ -133,74 +141,76 @@ const Camera = ({ setFileImg2 }) => {
         marginTop: "1rem",
       }}
     >
-      <div
-        style={{
-          width: "50%",
-          position: "relative",
-          height: "auto",
-          paddingTop: "48%",
-        }}
-      >
-        <Webcam
-          ref={webcamRef}
-          audio={false}
-          screenshotFormat="image/jpeg"
-          videoConstraints={videoConstraints}
-          onUserMedia={onUserMedia}
-          mirrored={false}
+      {!disabledCapture && (
+        <div
           style={{
-            width: "100%",
+            width: "50%",
+            position: "relative",
             height: "auto",
-            border: "1px solid #000",
-            borderRadius: "5px",
-            position: "absolute",
-            top: 0,
-            left: 0,
+            paddingTop: "48%",
           }}
-        />
-        <canvas
-          ref={canvasRef}
-          className="output_canvas"
-          style={{
-            width: "100%",
-            height: "auto",
-            border: "1px solid #000",
-            borderRadius: "5px",
-            position: "absolute",
-            top: 0,
-            left: 0,
-          }}
-        ></canvas>
-        <div>
-          <button
-            className="bg-black text-white px-4 py-2 rounded-md"
+        >
+          <Webcam
+            ref={webcamRef}
+            audio={false}
+            screenshotFormat="image/jpeg"
+            videoConstraints={videoConstraints}
+            onUserMedia={onUserMedia}
+            mirrored={false}
             style={{
+              width: "100%",
+              height: "auto",
+              border: "1px solid #000",
+              borderRadius: "5px",
               position: "absolute",
-              bottom: "1rem",
-              left: "3rem",
-              transform: "translate(-50%, -50%)",
+              top: 0,
+              left: 0,
             }}
-            onClick={capturePhoto}
-          >
-            Capture
-          </button>
-          <button
-            className="bg-black text-white px-4 py-2 rounded-md ml-2 my-2"
+          />
+          <canvas
+            ref={canvasRef}
+            className="output_canvas"
             style={{
+              width: "100%",
+              height: "auto",
+              border: "1px 0px 1px 1px solid #000",
+              borderRadius: "5px",
               position: "absolute",
-              bottom: "0.5rem",
-              left: "35%",
-              transform: "translate(-50%, -50%)",
+              top: 0,
+              left: 0,
             }}
-            onClick={(e) => {
-              e.preventDefault();
-              setUrl(null);
-            }}
-          >
-            Refresh
-          </button>
+          ></canvas>
+          <div>
+            <button
+              className="bg-black text-white px-4 py-2 rounded-md"
+              style={{
+                position: "absolute",
+                bottom: "1rem",
+                left: "3rem",
+                transform: "translate(-50%, -50%)",
+              }}
+              onClick={capturePhoto}
+            >
+              Capture
+            </button>
+            {/* <button
+              className="bg-black text-white px-4 py-2 rounded-md ml-2 my-2"
+              style={{
+                position: "absolute",
+                bottom: "0.5rem",
+                left: "35%",
+                transform: "translate(-50%, -50%)",
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                setUrl(null);
+              }}
+            >
+              Refresh
+            </button> */}
+          </div>
         </div>
-      </div>
+      )}
       <div>
         {url ? (
           <img
@@ -215,7 +225,8 @@ const Camera = ({ setFileImg2 }) => {
             }}
           />
         ) : (
-          <span className="m-auto text-center">Your Pic will be below 👇</span>
+          // <span className="m-auto text-center">Your Pic will be below 👇</span>
+          null
         )}
       </div>
     </div>

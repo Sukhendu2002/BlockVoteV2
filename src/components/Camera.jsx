@@ -136,6 +136,9 @@ const Camera = ({ setFileImg2 }) => {
       <div
         style={{
           width: "50%",
+          position: "relative",
+          height: "auto",
+          paddingTop: "48%",
         }}
       >
         <Webcam
@@ -150,7 +153,9 @@ const Camera = ({ setFileImg2 }) => {
             height: "auto",
             border: "1px solid #000",
             borderRadius: "5px",
-            zIndex: "9",
+            position: "absolute",
+            top: 0,
+            left: 0,
           }}
         />
         <canvas
@@ -161,23 +166,40 @@ const Camera = ({ setFileImg2 }) => {
             height: "auto",
             border: "1px solid #000",
             borderRadius: "5px",
+            position: "absolute",
+            top: 0,
+            left: 0,
           }}
         ></canvas>
-        <button
-          className="bg-black text-white px-4 py-2 rounded-md"
-          onClick={capturePhoto}
-        >
-          Capture
-        </button>
-        <button
-          className="bg-black text-white px-4 py-2 rounded-md ml-2 my-2"
-          onClick={(e) => {
-            e.preventDefault();
-            setUrl(null);
-          }}
-        >
-          Refresh
-        </button>
+        <div>
+          <button
+            className="bg-black text-white px-4 py-2 rounded-md"
+            style={{
+              position: "absolute",
+              bottom: "1rem",
+              left: "3rem",
+              transform: "translate(-50%, -50%)",
+            }}
+            onClick={capturePhoto}
+          >
+            Capture
+          </button>
+          <button
+            className="bg-black text-white px-4 py-2 rounded-md ml-2 my-2"
+            style={{
+              position: "absolute",
+              bottom: "0.5rem",
+              left: "35%",
+              transform: "translate(-50%, -50%)",
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              setUrl(null);
+            }}
+          >
+            Refresh
+          </button>
+        </div>
       </div>
       <div>
         {url ? (

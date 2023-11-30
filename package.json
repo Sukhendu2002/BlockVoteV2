@@ -8,6 +8,8 @@
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@preline/overlay": "^1.4.0",
+    "@mediapipe/camera_utils": "^0.3.1620247984",
+    "@mediapipe/face_mesh": "^0.4.1629159166",
     "@taquito/beacon-wallet": "^17.3.2",
     "@taquito/taquito": "^17.3.2",
     "@testing-library/jest-dom": "^5.17.0",

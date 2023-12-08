@@ -41,6 +41,3 @@ To get started with BlockVote, you'll need to set up both the client-side and se
 
 Add the server address to the client-side .env file as `REACT_APP_SERVER_URL`.
 
-### Customization 🎨
-
-BlockVote is highly customizable. You can modify the platform to suit your specific requirements. Refer to the documentation for details on how to customize various aspects of the platform.

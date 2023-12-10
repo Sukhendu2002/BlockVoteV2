@@ -45,7 +45,7 @@ const HowToWork = () => {
                 Contract Deployment
               </h3>
               <p class="mt-4 text-base text-gray-600">
-                Tailor your voting contracts effortlessly. Define election
+                Enhance your voting contracts effortlessly. Define election
                 parameters, customize options, and manage participants to match
                 your specific requirements.
               </p>

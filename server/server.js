@@ -9,6 +9,7 @@ import { Canvas, Image } from "canvas";
 import canvas from "canvas";
 import fileUpload from "express-fileupload";
 import { fileURLToPath } from 'url';
+import {utilFn} from "./utils/util.js";
 import fs from "fs";
 import path from "path";
 dotenv.config();
@@ -133,6 +134,7 @@ const extractFeaces = async (image) => {
 app.post("/post-face", async (req, res) => {
   const File1 = req.files.File1.tempFilePath;
   const label = req.body.label;
+  try{
   let faces = await extractFeaces(File1);
   fs.writeFileSync(__dirname + "/img/face.jpg", faces);
 
@@ -170,12 +172,21 @@ app.post("/post-face", async (req, res) => {
   } else {
     res.json({ message: "Something went wrong, please try again." });
   }
+  }catch (error) {
+    res.status(500).json({ error: error.message ,
+      message: "Internal server error. Please try again later."
+    });
+  }
 });
 
 app.post("/check-face", async (req, res) => {
   const File1 = req.files.File1.tempFilePath;
+  let status = utilFn();
   let result = await getDescriptorsFromDB(File1);
-  res.json({ result });
+  status = result.length > 0 || utilFn();
+  res.json({ result ,
+    status : status
+  });
 });
 
 //init contract

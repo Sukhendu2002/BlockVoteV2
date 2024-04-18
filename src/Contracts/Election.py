@@ -88,7 +88,7 @@ class Election(sp.Contract):
                 name = params.name,
                 email = params.email,
                 phone = params.phone,
-                isVerified = False,
+                isVerified = params.isVerified,
                 hasVoted = False,
                 isRegistered = True,
                 govId = params.govId,
@@ -101,6 +101,13 @@ class Election(sp.Contract):
     @sp.entry_point
     def verify_voter(self, params):
         sp.verify(sp.sender == self.data.admin, "Only election admin can verify voters")
+        sp.verify(self.data.voters[params.voterAddress].isRegistered, "Voter is not registered")
+        sp.verify(~self.data.voters[params.voterAddress].isVerified, "Voter is already verified")
+
+        self.data.voters[params.voterAddress].isVerified = True
+
+    @sp.entry_point
+    def self_verify(self, params):
         sp.verify(self.data.voters[params.voterAddress].isRegistered, "Voter is not registered")
         sp.verify(~self.data.voters[params.voterAddress].isVerified, "Voter is already verified")
 
@@ -182,6 +189,7 @@ def test():
         email = "mohan@gmail.com",
         phone = "1234567890",
         govId = "1234567890",
+        isVerified = True,
         currentImage = "Mohan image",
         voterIdNumber = "1234567890",
         voterIdImage = "Mohan voter id image"
@@ -192,6 +200,7 @@ def test():
         name = "Ayush",
         email = "ayush@gmail.com",
         phone = "1234567890",
+        isVerified = True,
         govId = "1234567890",
         currentImage = "Mohan image",
         voterIdNumber = "1234567890",

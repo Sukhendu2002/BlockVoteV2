@@ -83,17 +83,20 @@ export const registerAsVoter = async (
   name,
   email,
   phone,
+  isVerified,
   voterIdno,
   currentPic,
   currentVoterCard
 ) => {
   try {
     const contract = await Tezos.wallet.at(contractAddress);
+    console.log(contract)
     const operation = await contract.methods
       .register_as_voter(
         currentPic,
         email,
         voterIdno,
+        isVerified,
         name,
         phone,
         currentVoterCard,

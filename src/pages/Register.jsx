@@ -52,14 +52,42 @@ const Register = () => {
     });
   }, [contractAdd]);
 
+  const sendFileToIPFS = async (fileImg) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", fileImg);
+    
+      const resFile = await axios.post(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        formData,
+        {
+          maxBodyLength: "Infinity",
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${process.env.REACT_APP_PINATA_JWT}`,
+          },
+        }
+      );
+
+      console.log("File Uploaded to IPFS: ");
+      console.log(resFile.data.IpfsHash);
+      return resFile?.data?.IpfsHash;
+    } catch (error) {
+      console.log("Error sending File to IPFS: ");
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (fileImgUrl) {
-      const file = dataURLtoFile(fileImgUrl, "image.jpg");
+      const fileName = `image_${Date.now()}.jpg`;
+      const file = dataURLtoFile(fileImgUrl, fileName);
       setCurrentPic(file);
     }
   }, [fileImgUrl]);
 
   function dataURLtoFile(dataurl, filename) {
+    console.log("dataurl:", dataurl);
     if (typeof dataurl === "string" && dataurl.includes(",")) {
       var arr = dataurl.split(",");
       var mime = arr[0].match(/:(.*?);/)[1];
@@ -76,6 +104,38 @@ const Register = () => {
       // Handle invalid dataurl
       console.error("Invalid dataurl:", dataurl);
       return null; // or handle it in your own way
+    }
+  }
+
+  const faceDataUpload = async () => {
+    let isVerified = true;
+    const formDataFile = new FormData();
+    formDataFile.append("File1", currentVoterCard);
+    formDataFile.append("label", email);
+    try{
+      await axios
+      .post("http://localhost:7000/post-face", formDataFile, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      
+      const newFormData = new FormData();
+      newFormData.append("File1", currentPic );
+      const res = await axios
+      .post("http://localhost:7000/check-face", newFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      console.log(res.data);
+      if (res.data.status === true) {
+        isVerified = true;
+      }
+      return isVerified;
+    }catch(error){
+      console.error("Error uploading face data:", error);
+      return false;
     }
   }
 
@@ -102,6 +162,7 @@ const Register = () => {
     formData2.append("pinataOptions", options2);
     try {
       setUploading(true);
+      // Image upload
       const res = await axios.post(
         "https://api.pinata.cloud/pinning/pinFileToIPFS",
         formData,
@@ -131,28 +192,28 @@ const Register = () => {
       setCurrentVoterCardIpfs(res2.data.IpfsHash);
       console.log("Image Uploaded " + res2.data.IpfsHash);
 
+      const isVerified = await faceDataUpload();
+
       const operation = await registerAsVoter(
         contractAdd,
         name,
         email,
         phone,
+        isVerified,
         voterIdno,
         pic1,
         pic2
+      )
+      await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/send`,
+        {
+          number: phone,
+          message: `You are successfully registered as a voter for ${storage.electionName} election. Your voter id is ${voterIdno}.`,
+        }
       );
-      console.log(operation);
-      try {
-        const smsData = await axios.post(
-          `${process.env.REACT_APP_SERVER_URL}/send`,
-          {
-            number: phone,
-            message: `You are successfully registered as a voter for ${storage.electionName} election. Your voter id is ${voterIdno}.`,
-          }
-        );
-      } catch (error) {
-        console.log(error);
-      }
 
+      console.log("Voter Registration Successful");
+      console.log(operation);
       setUploading(false);
       navigate("/voting/" + contractAdd);
     } catch (err) {

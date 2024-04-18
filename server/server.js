@@ -8,6 +8,7 @@ import faceapi from "face-api.js";
 import { Canvas, Image } from "canvas";
 import canvas from "canvas";
 import fileUpload from "express-fileupload";
+import { fileURLToPath } from 'url';
 import fs from "fs";
 import path from "path";
 dotenv.config();
@@ -17,9 +18,17 @@ const client = twilio(
   process.env.TWILIO_AUTH_TOKEN
 );
 const app = express();
+app.use(
+  fileUpload({
+    useTempFiles: true,
+  })
+);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -73,26 +82,21 @@ async function uploadLabeledImages(images, label) {
     return error;
   }
 }
+
 async function getDescriptorsFromDB(image) {
   let faces = await FaceModel.find();
-  // eslint-disable-next-line no-undef
-  for (i = 0; i < faces.length; i++) {
-    // eslint-disable-next-line no-undef
-    for (j = 0; j < faces[i].descriptions.length; j++) {
-      // eslint-disable-next-line no-undef
+  for (let i = 0; i < faces.length; i++) {
+    for (let j = 0; j < faces[i].descriptions.length; j++) {
       faces[i].descriptions[j] = new Float32Array(
-        // eslint-disable-next-line no-undef
         Object.values(faces[i].descriptions[j])
       );
     }
-    // eslint-disable-next-line no-undef
     faces[i] = new faceapi.LabeledFaceDescriptors(
-      // eslint-disable-next-line no-undef
       faces[i].label,
-      // eslint-disable-next-line no-undef
       faces[i].descriptions
     );
   }
+
   const faceMatcher = new faceapi.FaceMatcher(faces, 0.6);
   const img = await canvas.loadImage(image);
   let temp = faceapi.createCanvasFromMedia(img);
@@ -108,6 +112,7 @@ async function getDescriptorsFromDB(image) {
   );
   return results;
 }
+
 const extractFeaces = async (image) => {
   const img = await canvas.loadImage(image);
   let temp = faceapi.createCanvasFromMedia(img);
@@ -134,8 +139,8 @@ app.post("/post-face", async (req, res) => {
   // let result = await uploadLabeledImages(
   //   [File1, File2, File3, File4, File5, File6],
   //   label
-  // );
-
+  // ); 
+  console.log("Face data uploaded successfully");
   let result = await uploadLabeledImages(
     [
       __dirname + "/img/face.jpg",
@@ -145,6 +150,7 @@ app.post("/post-face", async (req, res) => {
     ],
     label
   );
+  console.log("Face data uploaded successfully");
   fs.readdir(__dirname + "/tmp", (err, files) => {
     if (err) throw err;
 
@@ -300,7 +306,7 @@ app.post("/send", (req, res) => {
   client.messages
     .create({
       body: message,
-      from: "+12512801690",
+      from: "+16562205678",
       to: `+91${number}`,
     })
     .then((message) => {
@@ -317,6 +323,7 @@ const PORT = process.env.SERVER_PORT || 5000;
 app.listen(PORT, () => {
   // eslint-disable-next-line no-undef
   console.log(`Server is running on port ${PORT}`);
+  LoadModels();
   mongoose
     // eslint-disable-next-line no-undef
     .connect(process.env.MONGO_URI, {

@@ -391,7 +391,7 @@ const Register = () => {
                     ></path>
                   </svg>
                 ) : null}
-                Save
+                Register
               </button>
             </div>
           </form>

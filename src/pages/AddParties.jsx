@@ -148,7 +148,7 @@ const AddParties = () => {
                   }}
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      `https://block-vote-v2.vercel.app/voting/${contractAdd}`
+                      `http://localhost:3000/voting/${contractAdd}`
                     );
                   }}
                 >
@@ -171,7 +171,7 @@ const AddParties = () => {
                   onClick={() => {
                     //open the link in a new tab
                     window.open(
-                      `https://block-vote-v2.vercel.app/voting/${contractAdd}`,
+                      `http://localhost:3000/voting/${contractAdd}`,
                       "_blank"
                     );
                   }}
@@ -199,9 +199,10 @@ const AddParties = () => {
                     <button
                       type="button"
                       className="text-white px-4 py-2 rounded-md flex gradient bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
-                      onClick={() => {
-                        setLoading(true);
-                        const res = connectWallet();
+                      onClick={ async () => {
+                        try {
+                          setLoading(true);
+                        const res = await connectWallet();
                         StartElect(contractAdd);
 
                         const getStorage = async () => {
@@ -232,6 +233,10 @@ const AddParties = () => {
                         };
                         getStorage();
                         setLoading(false);
+                        } catch (error) {
+                          console.log(error); 
+                          setLoading(false);  
+                        }
                       }}
                     >
                       <svg

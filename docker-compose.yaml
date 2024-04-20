@@ -1,0 +1,23 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./server
+    ports:
+      - "7000:7000"
+    volumes:
+      - ./server:/app
+    environment:
+      NODE_ENV: production
+  frontend:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+volumes:
+  data:
+  logs:
